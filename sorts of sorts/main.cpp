@@ -8,24 +8,19 @@
 
 using namespace std;
 
-int* generateRandomArray(int size) // generate an (unsorted) array consisting of size distinct integers less than size
+int* generateRandomArray(const int& size) // generate an (unsorted) array consisting of size distinct integers in [0, size)
 {
     srand(time(NULL));
     int* arr = new int[size];
-    for(int i = 0; i < size; i++)
-    {
-        arr[i] = i;
-    }
+    int i = 0;
+    for_each(arr, arr + size, [&](int& x){x = i++;});
     random_shuffle(arr, arr + size);
     return arr;
 }
 
 void printArray(int* arr, int size) // iterately print elements of the given array
 {
-    for(int i = 0; i < size; i++)
-    {
-        cout << arr[i] << ' ';
-    }
+    for_each(arr, arr + size, [](int x){cout << x << ' ';});
     cout << endl;
 }
 
@@ -49,11 +44,7 @@ void insertionSort(int* arr, int size) // O(n^2), adaptive(benefitial to running
     }
 
     auto it3 = l.begin();
-    for(int i = 0 ; i < size; i++)
-    {
-        arr[i] = *it3;
-        ++it3;
-    }
+    for_each(arr, arr + size, [&](int& x){x = *it3++;});
 }
 
 void mergeSort(int* arr, int from, int to) // O(nlogn), from the first index of the array to the last 
