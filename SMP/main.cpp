@@ -18,6 +18,8 @@
 #include <random>
 #include <forward_list>
 #include <map>
+#include <iomanip>
+#include <cassert>
 
 using namespace std;
 
@@ -37,20 +39,20 @@ void printPreferenceProfiles(int**& menPrefile, int**& womenProfile, int size)
 {
     for(int i = 0; i < size; i++)
     {  
-        cout << "[M";
-        cout << menPrefile[i][0] << "] -> ";
+        cout << "[M" << ' ' << setfill('0') << setw(2) << menPrefile[i][0] << "] -> ";
+
         for(int j = 0; j < size; j++)
         {
-            cout << menPrefile[i][j + 1] << ' ';
+            cout << setfill('0') << setw(2) << menPrefile[i][j + 1] << ' ';
         }
 
-        cout << "    ";
+        cout << "  ";
 
-        cout << "[W";
-        cout << womenProfile[i][0] << "] -> ";
+        cout << "[M" << ' ' << setfill('0') << setw(2) << womenProfile[i][0] << "] -> ";
+
         for(int j = 0; j < size; j++)
         {
-            cout << womenProfile[i][j + 1] << ' ';
+            cout << setfill('0') << setw(2) << womenProfile[i][j + 1] << ' ';
         }
         cout << endl;
     }
@@ -134,7 +136,9 @@ map<int, int>* applyGS(int**& menProfile, int**& womenProfile, int size)
 
 int main()
 {
-    int size = 9, randomstate = 1, idxM = 1, idxW = 1;
+    int size = 20, randomstate = 1, idxM = 1, idxW = 1; // size ranges between 1 and 20
+    assert(size < 21 && size > 0);
+
     int** menProfile = new int*[size]; 
     int** womenProfile = new int*[size];
     for_each(menProfile, menProfile + size,
@@ -152,10 +156,10 @@ int main()
     int** newWomenProfile = new int*[size];
     for(auto iter = matches->begin(); iter != matches->end(); ++iter)
     {
-        newWomenProfile[iter->second] = new int[size + 1];
+        newWomenProfile[iter->first] = new int[size + 1];
         for(int i = 0; i < size + 1; i++)
         {
-            newWomenProfile[iter->second][i] = womenProfile[iter->first][i];
+            newWomenProfile[iter->first][i] = womenProfile[iter->second][i];
         }
     }
 
